@@ -1,0 +1,48 @@
+# SYSTEM
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias lss="screen -ls"
+alias cd..='cd ..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias c='clear'
+alias cp="cp -v"
+alias mv="mv -v"
+alias rm="rm -v -i"
+alias :q="exit"                     # vim habits die hard
+alias mk="mkdir -p"
+alias h="history"
+alias get='sudo apt-get install'
+alias shutdown='sudo /sbin/shutdown'
+
+ # VM
+alias web='cd ~/web/'
+alias vre='vagrant provision --reload'
+alias von='vagrant up; vagrant ssh'
+alias voff='vagrant suspend'
+alias art="php artisan"
+alias voff='vagrant halt'
+
+
+ # GIT
+alias ga="git add"
+alias gaa="git add -A"
+alias gs="git status"
+alias gb="git branch"
+alias gl="git log"
+alias gc="git commit -m"
+alias co="git checkout"
+
+
+ # SSH
+alias eiremun="gcloud config set project eiremun-2016; gcloud compute ssh eiremun"
+alias netsoc="ssh ffffionn@leela.netsoc.co -p 22"
+alias sshpi="ssh pi@ffffionn.xyz -p 22"
+alias pi-local="ssh pi@192.168.0.91 -p 22"
+alias vm='ssh vagrant@127.0.0.1 -p 2222'
+
+alias urserv="cd /opt/urserver/; ./urserver-start; cd -"
+
+alias irc="ssh ffffionn@leela.netsoc.co -t screen -r -D irc"
