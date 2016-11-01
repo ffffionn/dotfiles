@@ -1,87 +1,84 @@
 "------General------"
 
-set nocompatible              " be iMproved, required
+set nocompatible      " be iMproved, required
 
-so ~/.vim/plugins.vim
+so ~/.vim/plugins.vim " source plugins file
 
-syntax enable
-set expandtab        " tabs to spaces
-set shiftwidth=4     " 4 spaces per tab
+syntax enable         " syntax highlighting
+set path+=**          " recursively search sub-dirs
+set expandtab         " tabs to spaces
+set shiftwidth=4      " 4 spaces per tab
 set tabstop=4
 set mat=2
-set cursorline       " Highlight current line
+set cursorline        " highlight current line
 set showcmd
-set number
-set showmatch        " Show matching brackets
-set showbreak="+++"  " Long line wrap delimiter
-set mouse=a          " Mouse usable in all modes
+set number            " show line numbers
+set showmatch         " show matching brackets
+set showbreak="+++"   " long line wrap delimiter
+set mouse=a           " mouse usable in all modes
+set autoread          " auto read file when changed while open
 set directory=~/.swpFiles
 
-"set list             " Show blank characters
 set textwidth=80
 set lbr
 set tw=500
-" More natural splits
-set splitbelow
+
+set splitbelow        " more natural splits
 set splitright
 set history=1000
-set hidden  " buffers?
+set hidden            " dont force save of buffers until vim closes
+set scrolloff=10      " set 10 lines to the edge of screen
 
-set ttyfast           " optimize for fast terminal?
 
 set visualbell
 "set noerrorbells
 set report=0
 
-set textwidth=0
-set pastetoggle=<F2>  " Fixes code pasting and stupid indents
+set pastetoggle=<F2>  " fixes code pasting and stupid indents
 
 
 "------Visuals------"
 
 set t_CO=256
-try
-    colorscheme atom-dark-256
-catch
-    colorscheme desert
-endtry
+colors atom-dark-256
 
-"set guifont=Liberation_Mono_for_Powerline:h10
-"set guifont=Fira_Mono_for_Powerline:h10
 
 "------Searching------"
 
 set incsearch          " incremental search
 set hlsearch           " highlight all matches
 set ignorecase         " ignore case on search
+set smartcase          " case sensitive if one letter is upper case
 set showmatch
 set laststatus=2       " always status bar
 set ruler
 set backspace=2
-set equalalways         " always split equal size
+set equalalways        " always split equal size
 
-set wildignore=*.o,*.obj,*.bak,*.sw*,*.pyc
+set wildmenu
+set wildignore=*.o,*.obj,*.bak,*.sw*,*.pyc,*.class
 let g:netrw_list_hide =  '^\.[^\.],'
 let g:netrw_list_hide .= '\.pyc$,'
+let g:netrw_list_hide .= '\.class$,'
 
 
 "------Key Mappings------"
 
-let mapleader=','            " Default leader is \, but , is better
+" Default leader is \, but , is better
+let mapleader=','
 
-" Smart <Home>  -  First non-blank char on line
-noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
-imap <silent> <Home> <C-O><Home>
-
+" easier exit from insert
 imap jk <Esc>
-" Classic style savingss
-nmap <C-s> :w<cr>
-" Un-highlight searches
+
+" un-highlight searches
 nmap <Leader><space> :nohlsearch<cr>
-" Paste from buffer
+
+" paste from clipboard
 nmap <Leader>p "+p
-" Yank to EoL
+
+" yank to end of line
 nnoremap Y y$
+
 " quick edit config files
 nmap <Leader>ev :e $MYVIMRC<cr>
 nmap <Leader>ep :e $HOME/.vim/plugins.vim<cr>
@@ -89,35 +86,38 @@ nmap <Leader>ez :e $HOME/.zshrc<cr>
 nmap <Leader><Tab> :NERDTreeToggle<cr>
 
 " save as sudo if read-only
-noremap <leader>W  :w !sudo tee %<CR>
+noremap <leader>w  :w !sudo tee % > /dev/null
 command! W w
 
+" switch working directory to current buffers
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
 " buffers
-nmap <Leader>t :enew<cr>           " New buffer
-nmap <Leader>q :bp <BAR> bd #<CR>  " Close buffer
-nnoremap <C-Right> :bn<CR>         " Next buffer
-nnoremap <C-Left> :bp<CR>          " Prev buffer
+nmap <Leader>t :enew<cr>
+    " close current buffer
+nmap <Leader>q :bp <BAR> bd #<CR>
+nnoremap <C-Right> :bn<CR>
+nnoremap <C-Left> :bp<CR>
+nnoremap <C-L> :bn<CR>
+nnoremap <C-H> :bp<CR>
 
 " splits
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-H> <C-W><C-H>
-nnoremap <C-L> <C-W><C-L>
 nmap <Leader>s :split<cr>
 nmap <Leader>v :vsplit<cr>
 
+" resize splits with Alt+<ARROW>
 nmap <silent> <A-Left> <C-w><
 nmap <silent> <A-Down> <C-w>-
 nmap <silent> <A-Up> <C-W>+
 nmap <silent> <A-Right> <C-w>>
 
-" Fix page up and down
+" fix page up and down
 map <PageUp> <C-U>
 map <PageDown> <C-D>
-imap <PageUp> <C-O><C-U>
-imap <PageDown> <C-O><C-D>
 
 " navigation
+nmap <C-K> 5k
+nmap <C-J> 5j
 nmap <C-Up> 5k
 nmap <C-Down> 5j
 
@@ -128,19 +128,14 @@ nmap <Leader>k <Plug>(easymotion-k)
 
 "------Status Line------"
 
-"set statusline=%F%m%r%h%w\ %=%y\ %l\/%L\ \ %p%%
-
-set statusline=                                     " Override default
-" set statusline+=%1*%{fugitive#statusline()[4:-2]}%* " Show fugitive git info
+" Override default
+set statusline=
 set statusline+=%2*\ %f\ %m\ %r%*                   " Show filename/path
 set statusline+=%3*%=%*                             " Set right-side status info after this line
 set statusline+=%4*%l/%L:%v%*                       " Set <line number>/<total
 set statusline+=%5*\ %*                             " Set ending space
 
 set shm=atI                                         " Cut long messages
-
-" Set 7 lines to the cursor - when moving vertically using j/k
-set scrolloff=10
 
 
 "------Plugins------"
@@ -159,8 +154,9 @@ augroup END
 " Starting from vim 7.3 undo can be persisted across sessions
 if has("persistent_undo")
     set undodir=~/.vim/undodir
-    set undofile
+    set undofile 
 endif
+
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
@@ -171,4 +167,4 @@ autocmd BufReadPost *
 set viminfo^=%
 
 " Remove trailing whitespace on save 
-autocmd BufWritePre *.py :%s/\s\+$//e
+autocmd BufWritePre *.js, *.hs, *.html, *.css, *.scss, *.py :%s/\s\+$//e
