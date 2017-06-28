@@ -1,32 +1,28 @@
 #!/bin/bash
 #
-# Set up vim and zsh setup along with other things  (@ffffionn)
+# Set up vim and zsh (@ffffionn)
 
-apt-get install -y zsh vim git;
 apt-get update;
-
-git clone https://github.com/ffffionn/dotfiles.git ~/dotfiles;
+apt-get install -y zsh vim curl git;
 
 #  download and install fonts
-cd ~;
-git clone https://github.com/powerline/fonts;
-./fonts/install.sh;
+git clone https://github.com/powerline/fonts ~/.fonts;
+~/.fonts/install.sh;
 
-# set up dotfiles
+# set up vim
 mkdir -p ~/.vim/colors;
-mkdir -p ~/.swpFiles;
-cp ~/dotfiles/atom-dark-256.vim  ~/.vim/colors/atom-dark-256.vim;
-cp ~/dotfiles/plugins.vim  ~/.vim/;
-ln -s ~/dotfiles/vimrc  ~/.vimrc;
-cp ~/dotfiles/zshrc ~/.zshrc
+mkdir -p ~/.vim/undodir;
+mkdir -p ~/.vim/swap;
+mkdir -p ~/.vim/backups;
+ln -s vimrc  ~/.vimrc;
+cp atom-dark-256.vim  ~/.vim/colors/atom-dark-256.vim;
 
-# get vundle vim 
-git clone https://github.com/VundleVim/Vundle.vim.git  ~/.vim/bundle/Vundle.vim
-
-# install plugins 
+# get vundle vim and install plugins
+git clone https://github.com/VundleVim/Vundle.vim.git  ~/.vim/bundle/Vundle.vim;
 vim +PluginInstall +qall;
 
 
-#  get oh my zsh 
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
+#  get oh my zsh and copy config
 
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
+cp zshrc ~/.zshrc;

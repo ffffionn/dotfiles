@@ -1,56 +1,98 @@
-"------General------"
+"------GENERAL------"
 
-set nocompatible      " be iMproved, required
+set nocompatible             " be iMproved, required
 
-so ~/.vim/plugins.vim " source plugins file
+syntax enable                " syntax highlighting
+set path+=**                 " recursively search sub-dirs
+set expandtab                " tabs to spaces
+set shiftwidth=4             " 4 spaces per tab
+set tabstop=4                " tabs in file use 4 spaces
+set showmatch                " show matching brackets on hover
+set mat=2                    " tenths of a second to blink on bracket
+set cursorline               " highlight current line
+set showcmd                  " show incomplete commands
+set number                   " show line numbers
+set relativenumber           " show relative to current line
+set numberwidth=5            " wider number column (to cater for gitgutter)
+set showmatch                " show matching brackets
+set showbreak="+++"          " long line wrap delimiter
+set mouse=a                  " mouse usable in all modes
+set autoread                 " auto read file when changed while open
+set directory=~/.vim/swap    " special directory for swap files
+set backupdir=~/.vim/backups " special directory for backups
 
-syntax enable         " syntax highlighting
-set path+=**          " recursively search sub-dirs
-set expandtab         " tabs to spaces
-set shiftwidth=4      " 4 spaces per tab
-set tabstop=4
-set mat=2
-set cursorline        " highlight current line
-set showcmd
-set number            " show line numbers
-set showmatch         " show matching brackets
-set showbreak="+++"   " long line wrap delimiter
-set mouse=a           " mouse usable in all modes
-set autoread          " auto read file when changed while open
-set directory=~/.swpFiles
+" persistent undos
+if has("persistent_undo")
+    set undodir=~/.vim/undodir
+    set undofile
+endif
 
 set textwidth=80
 set lbr
 set tw=500
 
-set splitbelow        " more natural splits
+set splitbelow               " more natural splits
 set splitright
 set history=1000
-set hidden            " dont force save of buffers until vim closes
-set scrolloff=10      " set 10 lines to the edge of screen
-
+set hidden                   " allows switching between unsaved buffers
+set scrolloff=10             " set 10 lines to the edge of screen
 
 set visualbell
-"set noerrorbells
 set report=0
 
-set pastetoggle=<F2>  " fixes code pasting and stupid indents
+set pastetoggle=<F2>         " fixes code pasting and stupid indents
 
 
-"------Visuals------"
+" indent overrides for certain filetypes
+" [ts: file tab size, sts: edit tab size, sw: >> indent size]
+autocmd Filetype html setlocal ts=2 sts=2 sw=2
+autocmd Filetype css setlocal ts=2 sts=2 sw=2
+autocmd Filetype scss setlocal ts=2 sts=2 sw=2
+autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
+
+
+
+
+"------PLUGINS------"
+filetype off                " required
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'tpope/vim-vinegar'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-commentary'
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'rhysd/clever-f.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+"------VISUALS------"
 
 set t_CO=256
 colors atom-dark-256
 
 
-"------Searching------"
+"------SEARCHING------"
 
 set incsearch          " incremental search
 set hlsearch           " highlight all matches
 set ignorecase         " ignore case on search
 set smartcase          " case sensitive if one letter is upper case
 set showmatch
-set laststatus=2       " always status bar
+set laststatus=2       " always status bar (Airline in this case)
 set ruler
 set backspace=2
 set equalalways        " always split equal size
@@ -62,10 +104,11 @@ let g:netrw_list_hide .= '\.pyc$,'
 let g:netrw_list_hide .= '\.class$,'
 
 
-"------Key Mappings------"
+"------KEY MAPPINGS------"
 
-" Default leader is \, but , is better
-let mapleader=','
+" Default leader is \, but space is better
+nnoremap <SPACE> <Nop>
+let mapleader=' '
 
 " easier exit from insert
 imap jk <Esc>
@@ -126,7 +169,7 @@ nmap s <Plug>(easymotion-overwin-f)
 nmap <Leader>j <Plug>(easymotion-j)
 nmap <Leader>k <Plug>(easymotion-k)
 
-"------Status Line------"
+"------STATUS LINE------"
 
 " Override default
 set statusline=
@@ -138,27 +181,38 @@ set statusline+=%5*\ %*                             " Set ending space
 set shm=atI                                         " Cut long messages
 
 
-"------Plugins------"
+"------PLUGIN-OPTIONS------
+
 let NERDTreeHijackNetrw=0
+
+" work up to .git for working directory
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = '\/(node_modules)'
+
+let g:syntastic_python_checkers = ["flake8", "python"]
+
+" powerline on airline
+let g:airline_powerline_fonts = 1
+" enable buffer list top
+let g:airline#extensions#tabline#enabled = 1
+" show only filenmae
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+
+
 
 
 "------Auto-commands------"
 
-"auto source Vimrc on save"
+" auto source Vimrc and reload airline on save
 augroup autosourcing
     autocmd!
-    autocmd bufwritepost .vimrc source %
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    autocmd BufWritePost $MYVIMRC AirlineRefresh
 augroup END
 
 
-" Starting from vim 7.3 undo can be persisted across sessions
-if has("persistent_undo")
-    set undodir=~/.vim/undodir
-    set undofile 
-endif
-
-
-" Return to last edit position when opening files (You want this!)
+" Return to last edit position when opening files
 autocmd BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal! g`\"" |
@@ -166,5 +220,5 @@ autocmd BufReadPost *
 "Remember info about open buffers on close
 set viminfo^=%
 
-" Remove trailing whitespace on save 
-autocmd BufWritePre *.js, *.hs, *.html, *.css, *.scss, *.py :%s/\s\+$//e
+" Remove trailing whitespace on save
+autocmd BufWritePre * :%s/\s\+$//e
