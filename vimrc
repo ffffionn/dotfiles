@@ -137,12 +137,16 @@ map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " buffers
 nmap <Leader>t :enew<cr>
-    " close current buffer
+" close current buffer
 nmap <Leader>q :bp <BAR> bd #<CR>
 nnoremap <C-Right> :bn<CR>
 nnoremap <C-Left> :bp<CR>
-nnoremap <C-L> :bn<CR>
-nnoremap <C-H> :bp<CR>
+nnoremap <Leader>h :bp<CR>
+nnoremap <Leader>l :bn<CR>
+
+" quick to start/end of line
+nnoremap <C-L> $
+nnoremap <C-H> ^
 
 " splits
 nmap <Leader>s :split<cr>
@@ -166,8 +170,6 @@ nmap <C-Down> 5j
 
 " Easymotion
 nmap s <Plug>(easymotion-overwin-f)
-nmap <Leader>j <Plug>(easymotion-j)
-nmap <Leader>k <Plug>(easymotion-k)
 
 "------STATUS LINE------"
 
