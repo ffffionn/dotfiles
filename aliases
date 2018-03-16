@@ -17,26 +17,16 @@ alias h="history"
 alias get='sudo apt-get install'
 alias shutdown='sudo /sbin/shutdown'
 
- # VM
-alias vre='vagrant provision --reload'
-alias von='vagrant up; vagrant ssh'
-alias voff='vagrant suspend'
-alias voff='vagrant halt'
-alias art="php artisan"
-
-
  # GIT
 alias ga="git add"
 alias gaa="git add -A"
 alias gs="git status"
 alias gb="git branch"
-alias gl="git log"
 alias gc="git commit -m"
-alias co="git checkout"
-
+alias gco="git checkout"
+alias gcam="git add -A; git commit --amend --no-edit"
+alias gl="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
  # SSH
-alias sshpi="ssh pi@fionn.co -p 22"
 alias pi-local="ssh pi@192.168.0.91 -p 22"
-alias vm='ssh vagrant@127.0.0.1 -p 2222'
-alias irc="ssh pi@fionn.co -t screen -r -U -D irc"
+alias irc="ssh fionn@fionn.co -t screen -r -U -D irc"

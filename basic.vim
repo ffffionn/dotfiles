@@ -20,6 +20,8 @@ set mouse=a                  " mouse usable in all modes
 set autoread                 " auto read file when changed while open
 set directory=~/.vim/swap    " special directory for swap files
 set backupdir=~/.vim/backups " special directory for backups
+set autoindent               " match indentation of prev line
+set smartindent              " dependent on filetype
 
 " persistent undos
 if has("persistent_undo")
@@ -52,45 +54,20 @@ autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
 
 
 
-
-"------PLUGINS------"
-filetype off                " required
-
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'tpope/vim-vinegar'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'rhysd/clever-f.vim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-
-call vundle#end()            " required
-filetype plugin indent on    " required
-
-"------VISUALS------"
-
 set t_CO=256
-colors atom-dark-256
+try{
+    colors atom-dark-256
+}catch(){
+    colorscheme desert
+}
 
 
 "------SEARCHING------"
 
 set incsearch          " incremental search
 set hlsearch           " highlight all matches
-set ignorecase         " ignore case on search
-set smartcase          " case sensitive if one letter is upper case
+set ignorecase         " ignore case on search..
+set smartcase          " ..but case sensitive if one letter is upper case
 set showmatch
 set laststatus=2       " always status bar (Airline in this case)
 set ruler
@@ -132,9 +109,6 @@ nmap <Leader><Tab> :NERDTreeToggle<cr>
 noremap <leader>w  :w !sudo tee % > /dev/null
 command! W w
 
-" switch working directory to current buffers
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
-
 " buffers
 nmap <Leader>t :enew<cr>
 " close current buffer
@@ -159,11 +133,10 @@ map <PageDown> <C-D>
 " navigation
 nmap <C-K> 5k
 nmap <C-J> 5j
-nmap <C-Up> 5k
-nmap <C-Down> 5j
 
-" Easymotion
-nmap s <Plug>(easymotion-overwin-f)
+" netrw
+nmap - :Explore<CR>
+
 
 "------STATUS LINE------"
 
@@ -175,26 +148,6 @@ set statusline+=%4*%l/%L:%v%*                       " Set <line number>/<total
 set statusline+=%5*\ %*                             " Set ending space
 
 set shm=atI                                         " Cut long messages
-
-
-"------PLUGIN-OPTIONS------
-
-let NERDTreeHijackNetrw=0
-
-" work up to .git for working directory
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_custom_ignore = '\/(node_modules)'
-
-let g:syntastic_python_checkers = ["flake8", "python"]
-
-" powerline on airline
-let g:airline_powerline_fonts = 1
-" enable buffer list top
-let g:airline#extensions#tabline#enabled = 1
-" show only filenmae
-let g:airline#extensions#tabline#fnamemod = ':t'
-
-
 
 
 
