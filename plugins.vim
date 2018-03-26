@@ -18,17 +18,6 @@ Plugin 'vim-airline/vim-airline-themes'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-"------STATUS LINE------"
-
-" Override default
-set statusline=
-set statusline+=%2*\ %f\ %m\ %r%*                   " Show filename/path
-set statusline+=%3*%=%*                             " Set right-side status info after this line
-set statusline+=%4*%l/%L:%v%*                       " Set <line number>/<total
-set statusline+=%5*\ %*                             " Set ending space
-
-set shm=atI                                         " Cut long messages
-
 
 "------PLUGIN-OPTIONS------
 
@@ -44,30 +33,5 @@ let g:syntastic_python_checkers = ["flake8", "python"]
 let g:airline_powerline_fonts = 1
 " enable buffer list top
 let g:airline#extensions#tabline#enabled = 1
-" show only filenmae
+" show only filename
 let g:airline#extensions#tabline#fnamemod = ':t'
-
-
-
-
-
-"------Auto-commands------"
-
-" auto source Vimrc and reload airline on save
-augroup autosourcing
-    autocmd!
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
-    autocmd BufWritePost $MYVIMRC AirlineRefresh
-augroup END
-
-
-" Return to last edit position when opening files
-autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
-"Remember info about open buffers on close
-set viminfo^=%
-
-" Remove trailing whitespace on save
-autocmd BufWritePre * :%s/\s\+$//e

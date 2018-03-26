@@ -70,9 +70,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'easymotion/vim-easymotion'
 Plugin 'sheerun/vim-polyglot'
-Plugin 'rhysd/clever-f.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
@@ -136,11 +134,16 @@ command! W w
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " buffers
-nmap <Leader>t :enew<cr>
 " close current buffer
 nmap <Leader>q :bp <BAR> bd #<CR>
 nnoremap <C-L> :bn<CR>
 nnoremap <C-H> :bp<CR>
+
+" tabs
+nmap <Leader>t :tab new<CR>
+nmap <Leader>c :tab close<CR>
+nmap <Leader>h :tabp<CR>
+nmap <Leader>l :tabn<CR>
 
 " splits
 nmap <Leader>s :split<cr>
@@ -162,8 +165,6 @@ nmap <C-J> 5j
 nmap <C-Up> 5k
 nmap <C-Down> 5j
 
-" Easymotion
-nmap s <Plug>(easymotion-overwin-f)
 
 "------STATUS LINE------"
 
