@@ -14,8 +14,10 @@ cp ${curDir}/atom-dark-256.vim $HOME/.vim/colors/
 
 # get vundle vim and install plugins
 
-if [ "${PROCEED}" == "y" ] ; then
-    cat ${curDir}/plugins >> $HOME/.vimrc
+
+if [ "${plugins}" == "y" ] ; then
+    echo "Installing Plugins...";
+    cat ${curDir}/plugins.vim >> $HOME/.vimrc
     git clone https://github.com/VundleVim/Vundle.vim.git  ~/.vim/bundle/Vundle.vim;
     vim +PluginInstall +qall;
 fi
