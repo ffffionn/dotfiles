@@ -155,6 +155,9 @@ map <PageDown> <C-D>
 " navigation
 nmap <C-K> 5k
 nmap <C-J> 5j
+" for navigating wrapped lines
+nmap j gj
+nmap k gk
 
 " netrw
 nmap - :Explore<CR>
@@ -183,6 +186,8 @@ nnoremap <C-L> :bn<CR>
 nnoremap <C-H> :bp<CR>
 " close current buffer
 nmap <Leader>q :bp <BAR> bd #<CR>
+" list all open buffers, waiting for input to change
+nnoremap <leader>b :ls<CR> :b<space>
 
 " tabs
 nmap <Leader>t :tab new<CR>
@@ -199,6 +204,8 @@ nmap <silent> <A-Down> <C-w>-
 nmap <silent> <A-Up> <C-W>+
 nmap <silent> <A-Right> <C-w>>
 
+" indenting in visual mode, go back to visual mode on same selection
+vnoremap > >gv
 
 
 """""""""""""""""""""""""""""""""""""""""
