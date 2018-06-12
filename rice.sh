@@ -4,4 +4,5 @@
 
 curDir=$(pwd)
 
-echo "source ${pwd}/aliases" >> ~/.bash_rc
+echo "source $(pwd)/aliases" >> ~/.bash_rc
+cat $( pwd )/ideavimrc > $HOME/.ideavimrc

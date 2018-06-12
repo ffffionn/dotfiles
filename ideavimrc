@@ -1,11 +1,8 @@
 " INTELLIJ VIM MODE CONFIG "
 
 
-set surround                 " emulates vim-surround plugin
+set surround  " emulates vim-surround plugin
 set path+=**                 " recursively search sub-dirs
-set expandtab                " tabs to spaces
-set shiftwidth=4             " 4 spaces per tab
-set tabstop=4                " tabs in file use 4 spaces
 set showmatch                " show matching brackets on hover
 set mat=2                    " tenths of a second to blink on bracket
 set cursorline               " highlight current line
@@ -71,8 +68,8 @@ nmap <C-H> <C-W>h
 nmap <C-L> <C-W>l
 
 " switch 'buffers'
-nmap <silent> <Leader>h <A-Left> 
-nmap <silent> <Leader>l <A-Right> 
+nmap <silent> <Leader>h <A-Left>
+nmap <silent> <Leader>l <A-Right>
 
 " fix page up and down
 map <PageUp> <C-U>
