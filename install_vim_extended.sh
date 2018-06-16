@@ -1,8 +1,6 @@
 #!/bin/bash
 #
 
-echo -n "Install Plugins? [y/n]:"
-read -n 1 plugins
 
 curDir=$(pwd)
 
@@ -14,10 +12,7 @@ cp ${curDir}/atom-dark-256.vim $HOME/.vim/colors/
 
 # get vundle vim and install plugins
 
-
-if [ "${plugins}" == "y" ] ; then
-    echo "Installing Plugins...";
-    cat ${curDir}/plugins.vim >> $HOME/.vimrc
-    git clone https://github.com/VundleVim/Vundle.vim.git  ~/.vim/bundle/Vundle.vim;
-    vim +PluginInstall +qall;
-fi
+printf "\nInstalling Plugins...";
+cat ${curDir}/plugins.vim >> $HOME/.vimrc
+git clone https://github.com/VundleVim/Vundle.vim.git  ~/.vim/bundle/Vundle.vim 2> /dev/null;
+vim +PluginInstall +qall;

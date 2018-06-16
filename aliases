@@ -18,12 +18,12 @@ alias get='sudo apt-get install'
 alias shutdown='sudo /sbin/shutdown'
 
  # GIT
-alias ga="git add"
-alias gaa="git add -A"
+alias ga="git add -p"
+alias gaa="git add -A -p"
 alias gs="git status"
 alias gb="git branch"
 alias gc="git commit -m"
-alias gco="git checkout"
+alias co="git checkout"
 alias gcam="git add -A; git commit --amend --no-edit"
 alias gl="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 

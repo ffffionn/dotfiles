@@ -13,6 +13,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'vimwiki/vimwiki'
+Plugin 'simnalamburt/vim-mundo'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
@@ -36,3 +37,7 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 " show only filename
 let g:airline#extensions#tabline#fnamemod = ':t'
+
+
+"------KEY-MAPPINGS-------
+inoremap <C-U> :MundoToggle<CR>

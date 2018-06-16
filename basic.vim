@@ -23,7 +23,6 @@ set scrolloff=10             " set 10 lines to the edge of screen
 set sidescrolloff=5
 set visualbell               " visual cue instead of audio on error
 set report=0                 " show all substitutions
-set pastetoggle=<F2>         " fixes code pasting and stupid indents
 
 
 
@@ -31,21 +30,19 @@ set pastetoggle=<F2>         " fixes code pasting and stupid indents
 " - Swaps, Backups, Undo
 """"""""""""""""""""""""""""""""""""""""""
 
-" setup swap and backup in $HOME/.vim
-if !isdirectory($HOME."/.vim/backup")
-    call mkdir($HOME."/.vim/backup", "p")
-endif
+" no backups
+set nobackup
 
+" setup swap
 if !isdirectory($HOME."/.vim/swap")
     call mkdir($HOME."/.vim/swap", "p")
 endif
 
 " // after each means files will have full paths (seperator subbed for %)
-set backupdir=~/.vim/backups//
 set directory=~/.vim/swap//
 
 
-" setup persistent undos vim version is 7.3+
+" setup persistent undos
 if has("persistent_undo")
     if !isdirectory($HOME."/.vim/undo")
         call mkdir($HOME."/.vim/undo", "p")
@@ -152,12 +149,13 @@ command! W w
 map <PageUp> <C-U>
 map <PageDown> <C-D>
 
-" navigation
-nmap <C-K> 5k
-nmap <C-J> 5j
 " for navigating wrapped lines
 nmap j gj
 nmap k gk
+
+" autocomplete menu navigation
+imap <C-J> <C-N>
+imap <C-K> <C-P>
 
 " netrw
 nmap - :Explore<CR>
@@ -175,15 +173,13 @@ nmap <Leader>p "+p
 " quick edit config files
 nmap <Leader>ev :e $MYVIMRC<cr>
 nmap <Leader>ep :e $HOME/.vim/plugins.vim<cr>
-nmap <Leader>ez :e $HOME/.zshrc<cr>
-nmap <Leader><Tab> :NERDTreeToggle<cr>
 
 " save as sudo if read-only
 noremap <leader>w  :w !sudo tee % > /dev/null
 
 " buffers
-nnoremap <C-L> :bn<CR>
-nnoremap <C-H> :bp<CR>
+nnoremap <silent> <Leader>h :bp<CR>
+nnoremap <Leader>l :bn<CR>
 " close current buffer
 nmap <Leader>q :bp <BAR> bd #<CR>
 " list all open buffers, waiting for input to change
@@ -192,20 +188,28 @@ nnoremap <leader>b :ls<CR> :b<space>
 " tabs
 nmap <Leader>t :tab new<CR>
 nmap <Leader>c :tab close<CR>
-nmap <Leader>h :tabp<CR>
-nmap <Leader>l :tabn<CR>
 
-" splits
+" create splits
 nmap <Leader>s :split<cr>
 nmap <Leader>v :vsplit<cr>
+
+" easier split navigation
+nmap <C-H> <C-W>h
+nmap <C-L> <C-W>l
+nmap <C-J> <C-W>j
+nmap <C-K> <C-W>k
+
 " resize splits with Alt+<ARROW>
-nmap <silent> <A-Left> <C-w><
-nmap <silent> <A-Down> <C-w>-
 nmap <silent> <A-Up> <C-W>+
+nmap <silent> <A-Down> <C-w>-
+nmap <silent> <A-Left> <C-w><
 nmap <silent> <A-Right> <C-w>>
 
 " indenting in visual mode, go back to visual mode on same selection
 vnoremap > >gv
+
+" easy visual mode macros
+vmap @ :normal @
 
 
 """""""""""""""""""""""""""""""""""""""""
