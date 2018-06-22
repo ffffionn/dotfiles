@@ -41,4 +41,4 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 
 
 "------KEY-MAPPINGS-------
-inoremap <C-U> :MundoToggle<CR>
+nnoremap <C-U> :MundoToggle<CR>
