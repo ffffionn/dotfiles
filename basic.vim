@@ -153,6 +153,10 @@ map <PageDown> <C-D>
 nmap j gj
 nmap k gk
 
+" easier start/end of line
+nnoremap H ^
+nnoremap L $
+
 " autocomplete menu navigation
 imap <C-J> <C-N>
 imap <C-K> <C-P>
