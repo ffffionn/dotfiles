@@ -31,4 +31,5 @@ alias glast="git log -1 --stat"
  # SSH
 alias pi-local="ssh pi@192.168.0.91 -p 22"
 alias irc="ssh fionn@fionn.co -t screen -r -U -D irc"
+alias reddit="ssh fionn@fionn.co -t screen -r -U -D reddit"
 
