@@ -1,6 +1,5 @@
 " Extension of basic.vim
 
-
 " indent overrides for certain filetypes
 " [ts: file tab size, sts: edit tab size, sw: >> indent size]
 

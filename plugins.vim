@@ -44,3 +44,8 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 
 "------KEY-MAPPINGS-------
 nnoremap <C-U> :MundoToggle<CR>
+
+" remap GitGutter bindings
+nnoremap <leader>gu <Plug>GitGutterUndoHunk
+nnoremap <leader>gs <Plug>GitGutterStageHunk
+nnoremap <leader>gp <Plug>GitGutterPreviewHunk
