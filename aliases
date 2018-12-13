@@ -8,14 +8,16 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias c='clear'
-alias cp="cp -v"
-alias mv="mv -v"
-alias rm="rm -v -i"
+alias cp="cp -iv"
+alias mv="mv -iv"
+alias rm="rm -iv"
+alias grep="grep --color=auto"
 alias :q="exit"
-alias mk="mkdir -p"
-alias h="history"
+alias mk="mkdir -ip"
 alias get='sudo apt-get install'
 alias shutdown='sudo /sbin/shutdown'
+alias h="history"
+alias hg="history | grep "
 
  # GIT
 alias ga="git add -p"
@@ -23,10 +25,14 @@ alias gaa="git add -A -p"
 alias gs="git status"
 alias gb="git branch"
 alias gc="git commit -m"
+alias gd="git diff"
 alias co="git checkout"
 alias gcam="git add -A; git commit --amend --no-edit"
 alias gl="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias glast="git log -1 --stat"
+
+alias python="python3"
+alias pip="pip3"
 
  # SSH
 alias pi-local="ssh pi@192.168.0.91 -p 22"
