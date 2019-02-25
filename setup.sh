@@ -2,10 +2,10 @@
 #
 # Set up config
 
-curDir=$(dirname $0)
+dotfiles=$(dirname $0)
 
-echo "source $(curDir)/aliases" >> ~/.bash_rc
-cp $(curDir)/ideavimrc $HOME/.ideavimrc
+echo "source $(dotfiles)/aliases" >> ~/.bash_rc
+cp $(dotfiles)/ideavimrc $HOME/.ideavimrc
 source ./install_vim_extended.sh
 
 
