@@ -2,11 +2,14 @@
 #
 # Set up config
 
-dotfiles=$(dirname $0)
+cd `dirname $0`
+DOTFILES=`pwd`
 
-echo "source $(dotfiles)/aliases" >> ~/.bash_rc
-cp $(dotfiles)/ideavimrc $HOME/.ideavimrc
+echo "source $DOTFILES/aliases" >> ~/.bash_rc
+cp $DOTFILES/ideavimrc $HOME/.ideavimrc
 source ./install_vim_extended.sh
+
+cd -
 
 
 # Git config
