@@ -23,6 +23,7 @@ set scrolloff=10             " set 10 lines to the edge of screen
 set sidescrolloff=5
 set visualbell               " visual cue instead of audio on error
 set report=0                 " show all substitutions
+set foldcolumn=3             " level of folds in sidebar
 
 
 
@@ -214,6 +215,14 @@ vnoremap > >gv
 
 " easy visual mode macros
 vmap @ :normal @
+
+" replay last macro instead of Ex Mode
+nnoremap Q @@
+
+" s deletes to black hole register
+nnoremap s "_d
+nnoremap ss "_dd
+nnoremap S "_D
 
 
 """""""""""""""""""""""""""""""""""""""""
