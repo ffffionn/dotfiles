@@ -9,7 +9,6 @@
 " - Functional
 """"""""""""""""""""""""""""""""""""""""""
 
-set nocompatible             " leave the 1980s
 syntax enable                " syntax highlighting
 set path+=**                 " recursively search sub-dirs
 set expandtab                " tabs to spaces
