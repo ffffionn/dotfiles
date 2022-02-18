@@ -1,18 +1,9 @@
-" IDEAVIM CONFIG "
-
-
-
-set surround                 " emulates vim-surround plugin
-set commentary               " emulates commentary.vim plugin
-
-" Global VIM marks set IDEA bookmarks
-set ideamarks
-
-" Let IDEA join lines (collapses concatonation and nested if's, etc)
-set ideajoin
-
-" Keep VIM mode when entering refactor prompts
-set idearefactormode=keep
+" Configuration for IdeaVim - https://github.com/JetBrains/ideavim/wiki/
+"
+" ============================================================================
+"    GENERAL
+" ============================================================================
+"
 
 set number                   " show line numbers
 set relativenumber           " show relative to current line
@@ -25,9 +16,23 @@ set hlsearch                 " highlight all matches
 set ignorecase               " ignore case on search
 set smartcase                " case sensitive if one letter is upper case
 
+" Plugins - https://github.com/JetBrains/ideavim/wiki/Emulated-plugins
+set surround                 " emulates vim-surround plugin
+set commentary               " emulates commentary.vim plugin
+set sneak                    " emulates vim-sneak
+set vim-paragraph-motion     " treat whitespace-only lines as blank for { }
+set textobj-entire           " ae = whole file, ie = minus surrounding whitespace
+set highlightedyank          " highlight yanks
 
+set ideamarks                " Global VIM marks set IDEA bookmarks
+set ideajoin                 " Let IDEA join lines (collapses concatenation and nested if's, etc)
+set idearefactormode=keep    " Keep VIM mode when entering refactor prompts
 
-"------KEY MAPPINGS------"
+" Map Tab to Nop until command mode bug is fixed.
+cnoremap <Tab> <Nop>
+
+" Pairs of characters that "%" can match
+set matchpairs=(:),[:],{:},<:>
 
 " disable arrow keys in normal mode
 map <up> <nop>
@@ -39,51 +44,117 @@ map <right> <nop>
 nnoremap <SPACE> <Nop>
 let mapleader=' '
 
-" easier exit insert mode
-imap jk <Esc>
-
 " un-highlight searches
-nmap <Leader><space> :nohlsearch<cr>
-
-" paste from clipboard
-nmap <Leader>p "+p
+nnoremap <Leader><space> :nohlsearch<cr>
 
 " yank to end of line
 nnoremap Y y$
+
+" splits
+nnoremap <Leader>s :split<cr>
+nnoremap <Leader>v :vsplit<cr>
+" keep IDE <C-w> functionality in visual
+sethandler <C-w> n:vim v:ide
+
+
+"
+" ============================================================================
+"     NAVIGATION
+" ============================================================================
+"
 
 " quick to start/end of line
 nnoremap H ^
 nnoremap L $
 
-" splits
-nmap <Leader>s :split<cr>
-nmap <Leader>v :vsplit<cr>
-nmap <C-H> <C-W>h
-nmap <C-L> <C-W>l
+set easymotion
+nnoremap <leader>F <Plug>(easymotion-s)
+nnoremap <leader>f <Plug>(easymotion-f)
 
-" fix page up and down
-map <PageUp> <C-U>
-map <PageDown> <C-D>
-
-
-" Some IntelliJ actions
-"
 " sub-menu navigation
-map <C-K> :action Up<CR>
-map <C-J> :action Down<CR>
+sethandler <C-k> a:vim
+sethandler <C-j> a:vim
+nnoremap <C-K> :action Up<CR>
+nnoremap <C-J> :action Down<CR>
 
 " navigate tabs with Alt-H/L
-map <A-H> :action PreviousTab<CR>
-map <A-L> :action NextTab<CR>
+nnoremap <A-H> :action PreviousTab<CR>
+nnoremap <A-L> :action NextTab<CR>
+" and also with tab/shift-tab
+nnoremap <TAB> :action PreviousTab<CR>
+nnoremap <s-TAB> :action NextTab<CR>
 
-" also with leader h/l
-map <Leader>h :action PreviousTab<CR>
-map <Leader>l :action NextTab<CR>
 
-map <C-b> :action GotoDeclaration<CR>
-map <C-S-Q> :action GotoImplementation<CR>
-map <C-n> :action GotoClass<CR>
+sethandler <C-b> a:vim
+sethandler <C-n> a:vim
+nnoremap <C-b> :action GotoDeclaration<CR>
+nnoremap <C-S-Q> :action GotoImplementation<CR>
+nnoremap <C-n> :action GotoClass<CR>
+nnoremap <Leader>h :action CallHierarchy<CR>
 
-nmap <leader>f :action FileStructurePopup<CR>
-nmap <leader>w :action Vcs.ShowTabbedFileHistory<CR>
-nmap <leader>q :action CloseActiveTab<CR>
+nnoremap g; :action JumpToLastChange<CR>
+nnoremap g, :action JumpToNextChange<CR>
+
+nnoremap ge :action GoToNextError<CR>
+nnoremap gE :action GoToPreviousError<CR>
+
+sethandler <C-e> a:vim
+sethandler <C-f> a:vim
+nnoremap <C-e> :action RecentFiles<CR>
+nnoremap <C-f> :action FileStructurePopup<CR>
+nnoremap <leader>w :action Vcs.ShowTabbedFileHistory<CR>
+
+"
+" ============================================================================
+"    EDITING
+" ============================================================================
+"
+
+
+" easier exit insert mode
+inoremap jk <Esc>
+
+" Great pasting functionality
+set clipboard=unnamed,unnamedplus,ideaput
+nnoremap <leader>p :action PasteMultiple<CR>
+
+sethandler <C-c> a:ide   " Copy works as usual
+sethandler <C-v> a:ide   " Paste works as usual
+
+" keep visual mode selection after indenting
+vnoremap < <gv
+vnoremap > >gv
+
+sethandler <C-q> a:vim
+noremap <C-q> :action QuickJavaDoc<CR>
+
+nnoremap <leader>n :action Kotlin.NewFile<CR>
+nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
+nnoremap <leader>q :action CloseContent<CR>
+
+sethandler <C-d> a:vim
+noremap <C-d> :action SelectWordAtCaretAction<CR>
+
+
+"
+" ============================================================================
+"    EXTRAS
+" ============================================================================
+"
+
+" edit vimrc
+nnoremap \e :e ~/.ideavimrc<CR>
+
+" open terminal in project root
+sethandler <c-t> a:vim
+nnoremap <c-t> :action ActivateTerminalToolWindow<CR>
+" open terminal in current file location
+nnoremap <leader>t :action Terminal.OpenInTerminal<CR>
+
+
+" Distraction Free Mode
+sethandler <c-z> a:vim
+nnoremap <c-z> :action ToggleDistractionFreeMode<CR>
+
+sethandler <c-x> a:vim
+nnoremap <c-x> :action HideAllWindows<CR>
