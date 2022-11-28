@@ -1,4 +1,4 @@
-" Configuration for IdeaVim - https://github.com/JetBrains/ideavim/wiki/
+" Configuration for IdeaVim - https://github.com/JetBrains/ideavim/wiki/ 
 "
 " ============================================================================
 "    GENERAL
@@ -8,6 +8,7 @@
 set number                   " show line numbers
 set relativenumber           " show relative to current line
 set showmode                 " show mode on status line
+
 set scrolloff=10             " set 10 lines to the edge of screen
 set sidescrolloff=5          " and 5 to the side
 
@@ -16,29 +17,24 @@ set hlsearch                 " highlight all matches
 set ignorecase               " ignore case on search
 set smartcase                " case sensitive if one letter is upper case
 
-" Plugins - https://github.com/JetBrains/ideavim/wiki/Emulated-plugins
+" Plugins - https://github.com/JetBrains/ideavim/wiki/Emulated-plugins 
 set surround                 " emulates vim-surround plugin
 set commentary               " emulates commentary.vim plugin
 set sneak                    " emulates vim-sneak
 set vim-paragraph-motion     " treat whitespace-only lines as blank for { }
 set textobj-entire           " ae = whole file, ie = minus surrounding whitespace
 set highlightedyank          " highlight yanks
+set NERDTree                 " emulates NERDTree for project window
 
 set ideamarks                " Global VIM marks set IDEA bookmarks
 set ideajoin                 " Let IDEA join lines (collapses concatenation and nested if's, etc)
 set idearefactormode=keep    " Keep VIM mode when entering refactor prompts
 
-" Map Tab to Nop until command mode bug is fixed.
+" Map Tab to Nop until command mode bug is fixed. 
 cnoremap <Tab> <Nop>
 
 " Pairs of characters that "%" can match
 set matchpairs=(:),[:],{:},<:>
-
-" disable arrow keys in normal mode
-map <up> <nop>
-map <down> <nop>
-map <left> <nop>
-map <right> <nop>
 
 " Default leader is \, but space is better
 nnoremap <SPACE> <Nop>
@@ -51,9 +47,9 @@ nnoremap <Leader><space> :nohlsearch<cr>
 nnoremap Y y$
 
 " splits
-nnoremap <Leader>s :split<cr>
-nnoremap <Leader>v :vsplit<cr>
-" keep IDE <C-w> functionality in visual
+nnoremap <Leader>ws :split<cr>
+nnoremap <Leader>wv :vsplit<cr>
+" keep IDE <C-w> functionality in visual - select outer block
 sethandler <C-w> n:vim v:ide
 
 
@@ -63,46 +59,47 @@ sethandler <C-w> n:vim v:ide
 " ============================================================================
 "
 
+" open NERDTree
+nnoremap <Leader>x :NERDTreeToggle<cr>
+
 " quick to start/end of line
 nnoremap H ^
 nnoremap L $
 
-set easymotion
-nnoremap <leader>F <Plug>(easymotion-s)
-nnoremap <leader>f <Plug>(easymotion-f)
-
 " sub-menu navigation
-sethandler <C-k> a:vim
-sethandler <C-j> a:vim
-nnoremap <C-K> :action Up<CR>
-nnoremap <C-J> :action Down<CR>
+sethandler <C-k> a:ide
+sethandler <C-j> a:ide
+" below Up mapping is broken for some reason "
+noremap <C-K> :action Up<CR>
+noremap <C-J> :action Down<CR>
 
 " navigate tabs with Alt-H/L
 nnoremap <A-H> :action PreviousTab<CR>
 nnoremap <A-L> :action NextTab<CR>
-" and also with tab/shift-tab
-nnoremap <TAB> :action PreviousTab<CR>
-nnoremap <s-TAB> :action NextTab<CR>
 
-
-sethandler <C-b> a:vim
-sethandler <C-n> a:vim
-nnoremap <C-b> :action GotoDeclaration<CR>
-nnoremap <C-S-Q> :action GotoImplementation<CR>
-nnoremap <C-n> :action GotoClass<CR>
+" code navigation
+nnoremap <leader>gd :action GotoDeclaration<CR>
+nnoremap <leader>gi :action GotoImplementation<CR>
+nnoremap <leader>gu :action FindUsages<CR>
+nnoremap <leader>gt :action GotoTest<CR>
 nnoremap <Leader>h :action CallHierarchy<CR>
+nnoremap <Leader>s :action SearchEverywhere<CR>
 
 nnoremap g; :action JumpToLastChange<CR>
 nnoremap g, :action JumpToNextChange<CR>
 
-nnoremap ge :action GoToNextError<CR>
-nnoremap gE :action GoToPreviousError<CR>
+nnoremap ge :action GotoNextError<CR>
+nnoremap gE :action GotoPreviousError<CR>
 
 sethandler <C-e> a:vim
 sethandler <C-f> a:vim
 nnoremap <C-e> :action RecentFiles<CR>
 nnoremap <C-f> :action FileStructurePopup<CR>
 nnoremap <leader>w :action Vcs.ShowTabbedFileHistory<CR>
+
+" Jump between methods
+nnoremap [[ :action MethodUp<CR>
+nnoremap ]] :action MethodDown<CR>
 
 "
 " ============================================================================
@@ -118,32 +115,29 @@ inoremap jk <Esc>
 set clipboard=unnamed,unnamedplus,ideaput
 nnoremap <leader>p :action PasteMultiple<CR>
 
-sethandler <C-c> a:ide   " Copy works as usual
+sethandler <C-c> a:ide   " Copy works as usual 
 sethandler <C-v> a:ide   " Paste works as usual
 
 " keep visual mode selection after indenting
 vnoremap < <gv
 vnoremap > >gv
 
+sethandler <C-p> a:vim
 sethandler <C-q> a:vim
+noremap <C-p> :action ParameterInfo<CR>
 noremap <C-q> :action QuickJavaDoc<CR>
 
-nnoremap <leader>n :action Kotlin.NewFile<CR>
+nnoremap <leader>n :action NewFile<CR>
 nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
 nnoremap <leader>q :action CloseContent<CR>
 
-sethandler <C-d> a:vim
-noremap <C-d> :action SelectWordAtCaretAction<CR>
 
 
 "
 " ============================================================================
-"    EXTRAS
+"    EXTRAS 
 " ============================================================================
 "
-
-" edit vimrc
-nnoremap \e :e ~/.ideavimrc<CR>
 
 " open terminal in project root
 sethandler <c-t> a:vim
@@ -158,3 +152,4 @@ nnoremap <c-z> :action ToggleDistractionFreeMode<CR>
 
 sethandler <c-x> a:vim
 nnoremap <c-x> :action HideAllWindows<CR>
+
