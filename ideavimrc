@@ -1,4 +1,4 @@
-" Configuration for IdeaVim - https://github.com/JetBrains/ideavim/wiki/ 
+" Configuration for IdeaVim - https://github.com/JetBrains/ideavim/wiki/
 "
 " ============================================================================
 "    GENERAL
@@ -17,7 +17,7 @@ set hlsearch                 " highlight all matches
 set ignorecase               " ignore case on search
 set smartcase                " case sensitive if one letter is upper case
 
-" Plugins - https://github.com/JetBrains/ideavim/wiki/Emulated-plugins 
+" Plugins - https://github.com/JetBrains/ideavim/wiki/Emulated-plugins
 set surround                 " emulates vim-surround plugin
 set commentary               " emulates commentary.vim plugin
 set sneak                    " emulates vim-sneak
@@ -29,8 +29,10 @@ set NERDTree                 " emulates NERDTree for project window
 set ideamarks                " Global VIM marks set IDEA bookmarks
 set ideajoin                 " Let IDEA join lines (collapses concatenation and nested if's, etc)
 set idearefactormode=keep    " Keep VIM mode when entering refactor prompts
+set ideavimsupport=dialog    " Use VIM in IDEA dialogs
+set showmode
 
-" Map Tab to Nop until command mode bug is fixed. 
+" Map Tab to Nop until command mode bug is fixed.
 cnoremap <Tab> <Nop>
 
 " Pairs of characters that "%" can match
@@ -69,7 +71,7 @@ nnoremap L $
 " sub-menu navigation
 sethandler <C-k> a:ide
 sethandler <C-j> a:ide
-" below Up mapping is broken for some reason "
+" below Up mapping is broken for some reason  - configure these manually in IDE "
 noremap <C-K> :action Up<CR>
 noremap <C-J> :action Down<CR>
 
@@ -84,6 +86,9 @@ nnoremap <leader>gu :action FindUsages<CR>
 nnoremap <leader>gt :action GotoTest<CR>
 nnoremap <Leader>h :action CallHierarchy<CR>
 nnoremap <Leader>s :action SearchEverywhere<CR>
+nnoremap <C-n> :action GotoClass<CR>
+nnoremap gj :action VcsShowNextChangeMarker<CR>
+nnoremap gk :action VcsShowPrevChangeMarker<CR>
 
 nnoremap g; :action JumpToLastChange<CR>
 nnoremap g, :action JumpToNextChange<CR>
@@ -115,8 +120,9 @@ inoremap jk <Esc>
 set clipboard=unnamed,unnamedplus,ideaput
 nnoremap <leader>p :action PasteMultiple<CR>
 
-sethandler <C-c> a:ide   " Copy works as usual 
-sethandler <C-v> a:ide   " Paste works as usual
+" Copy/Paste works as usual
+sethandler <C-c> a:ide
+sethandler <C-v> a:ide
 
 " keep visual mode selection after indenting
 vnoremap < <gv
@@ -128,6 +134,7 @@ noremap <C-p> :action ParameterInfo<CR>
 noremap <C-q> :action QuickJavaDoc<CR>
 
 nnoremap <leader>n :action NewFile<CR>
+nnoremap <leader>k :action Kotlin.NewFile<CR>
 nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
 nnoremap <leader>q :action CloseContent<CR>
 
@@ -135,7 +142,7 @@ nnoremap <leader>q :action CloseContent<CR>
 
 "
 " ============================================================================
-"    EXTRAS 
+"    EXTRAS
 " ============================================================================
 "
 
@@ -153,3 +160,68 @@ nnoremap <c-z> :action ToggleDistractionFreeMode<CR>
 sethandler <c-x> a:vim
 nnoremap <c-x> :action HideAllWindows<CR>
 
+
+""" Java Method text-object Emulation"{{{
+""" https://youtrack.jetbrains.com/issue/VIM-480/Add-text-objects-for-code-constructs-like-a-method-and-a-class
+"""     -> ripped from https://gist.github.com/SethMilliken/7cf8d9322de6f626d1d29add8b45d5b6#file-v-L185
+
+" text-objects emulation
+nmap vad <action>($SelectAll)
+nmap vmm :call SelectMethod()<CR>
+nmap vim :call SelectMethodInner()<CR>
+nmap vam :call SelectMethodFull()<CR>
+nmap dim :call DeleteMethodInner()<CR>
+nmap dam :call DeleteMethodFull()<CR>
+nmap yim :call SelectMethodInner()<CR>y
+nmap yam :call SelectMethodFull()<CR>y
+nmap dom :call AltSelectMethod()<CR>
+
+function! SelectMethodBase(post)
+    normal }
+    action MethodUp
+    exe "normal " . "_Vg_%" . a:post
+endfunction
+
+" Center Method
+function! SelectMethod(post="")
+    let l:base = "o" . "zz" . a:post
+    call SelectMethodBase(l:base)
+endfunction
+
+" Select contents of method
+function! SelectMethodInner(post="")
+    let l:base = "j" . "o" . "k" . "o" . a:post
+    call SelectMethod(l:base)
+endfunction
+
+" Select full method, including preceding whitespace
+function! SelectMethodFull(post="")
+    let l:base = "{" . a:post
+    call SelectMethod(l:base)
+endfunction
+
+function! DeleteMethodInner()
+    call SelectMethodInner("d")
+endfunction
+
+function! DeleteMethodFull()
+    call SelectMethodFull("d")
+endfunction
+
+function! AltSelectMethod()
+    normal }
+    action MethodUp
+    let lines = {'first': 0, 'last': 0, 'first_nb': 0}
+    let lines['first'] = line(".")
+    normal k
+    exe "/{"
+    normal _f{%
+    let lines['last'] = line(".")
+    exe "normal " . lines['first'] . "G"
+    exe "?^$"
+    let lines['first_ext'] = line(".") + 1
+    let lines['last_ext'] = lines['last'] + 1
+    " echo lines['first'] . "," . lines['last']
+    "exe "normal " . lines['first'] . "G" . "V" . lines['last'] . "G"
+    exe "normal " . lines['first_ext'] . "G" . "V" . lines['last_ext'] . "G" . "o"
+endfunction
